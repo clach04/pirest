@@ -26,6 +26,7 @@ Then open a browser to http://localhost:8080/led_17 or issue:
 
     curl http://localhost:8080/led_17
 
+NOTE `http://localhost:8080/led_17` will work but `http://localhost:8080/led_17/` will *not*.
 
 ## pirest service
 
