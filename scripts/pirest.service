@@ -1,0 +1,15 @@
+# from https://www.raspberrypi.org/documentation/linux/usage/systemd.md
+[Unit]
+Description=pirest service
+After=network.target
+
+[Service]
+ExecStart=/home/pi/py/pirest/flask_get.py
+WorkingDirectory=/home/pi/py/pirest
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
