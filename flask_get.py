@@ -73,6 +73,7 @@ if __name__ == "__main__":
 
     f = open(config_filename, 'rb')
     data = f.read()
+    data = data.decode('utf-8')
     f.close()
 
     config = load_json(data)
