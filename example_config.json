@@ -7,12 +7,14 @@
 
     "urls": {
         "led_17": {
-            "#comment": "/led_17/ will fail, but /led_17 will work for URL",
+            "#comment1": "/led_17/ will fail, but /led_17 will work for URL",
+            "#comment2": "NOTE momentary ON, for hard coded (0.5) number of seconds",
             "gpio": 27
         },
 
         "something/led_27": {
-            "#comment": "/something/led_27/ will fail, but /something/led_27 will work for URL",
+            "#comment1": "/something/led_27/ will fail, but /something/led_27 will work for URL",
+            "#comment2": "NOTE momentary ON, for hard coded (0.5) number of seconds",
             "gpio": 17
         }
     }
