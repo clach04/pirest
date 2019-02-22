@@ -16,6 +16,14 @@
             "#comment1": "/something/led_27/ will fail, but /something/led_27 will work for URL",
             "#comment2": "NOTE momentary ON, for hard coded (0.5) number of seconds",
             "gpio": 17
+        },
+
+        "tv_remote/on": {
+            "gpio": 17
+        },
+
+        "tv_remote/off": {
+            "gpio": 27
         }
     }
 }
