@@ -97,7 +97,10 @@ def any_path(url_path):
         abort(404)
 
 
-if __name__ == "__main__":
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
     config_filename = 'config.json'
 
     f = open(config_filename, 'rb')
@@ -125,3 +128,7 @@ if __name__ == "__main__":
             del(config['config'][key])
     log.info('Serving on http://%s:%d', settings['host'], settings['port'])
     app.run(**settings)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
