@@ -71,7 +71,7 @@ def trigger_emulation(config):
     status = 'LOCKED'  # may not be a good default status
     action = request.args.get('action')
     log.info('GET action %r', action)
-    if action == 'state':
+    if action in ('state', 'status'):
         return 'LOCKED'
     else:
         # open or close
