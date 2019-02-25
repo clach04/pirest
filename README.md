@@ -52,3 +52,9 @@ Useage
 
 
     systemctl list-unit-files --state=enabled | grep pirest
+
+## Trigger Android app
+
+The sample config file has an entry for a garage that works with https://github.com/mwarning/trigger
+
+NOTE at this time, this is experimental as the token is **ignored** and https is not implemented.
