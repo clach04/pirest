@@ -49,6 +49,7 @@ Useage
     sudo systemctl start pirest.service
     sudo systemctl restart pirest.service
     sudo systemctl status pirest.service
+    sudo systemctl status pirest.service -n 100
 
 
     systemctl list-unit-files --state=enabled | grep pirest
