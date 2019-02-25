@@ -98,8 +98,7 @@ def any_path(url_path):
 
 
 if __name__ == "__main__":
-    if argv is None:
-        argv = sys.argv
+    argv = sys.argv
 
     try:
         config_filename = argv[1]
