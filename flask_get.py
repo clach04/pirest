@@ -101,7 +101,11 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    config_filename = 'config.json'
+    try:
+        config_filename = argv[1]
+    except IndexError:
+        config_filename = 'config.json'
+    log.info('Using config file %r', config_filename)
 
     f = open(config_filename, 'rb')
     data = f.read()
