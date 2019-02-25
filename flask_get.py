@@ -89,7 +89,6 @@ def any_path(url_path):
     d = url_mapping.get(url_path)
     if d:
         if d.get('status'):
-            log.info('status is present %r', d.get('status'))
             return trigger_emulation(d)
         gpio_pin = d['gpio']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
         return control_gpio(gpio_pin)
