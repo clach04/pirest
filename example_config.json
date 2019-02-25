@@ -24,6 +24,15 @@
 
         "tv_remote/off": {
             "gpio": 27
+        },
+
+        "garage": {
+            "status": {
+                "close": 17,
+                "open": 27
+            },
+            "#comment_url": "curl http://localhost:8080/garage",
+            "#comment_1": "allow control from https://github.com/mwarning/trigger"
         }
     }
 }

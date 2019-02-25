@@ -17,7 +17,7 @@ if is_win:
 
 from gpiozero import LED
 
-from flask import Flask, abort
+from flask import Flask, abort, request
 
 
 version_tuple = (0, 0, 1)
@@ -67,11 +67,30 @@ def control_gpio(gpio_pin):
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
+def trigger_emulation(config):
+    status = 'LOCKED'  # may not be a good default status
+    action = request.args.get('action')
+    log.info('GET action %r', action)
+    if action == 'state':
+        return 'LOCKED'
+    else:
+        # open or close
+        gpio_pin = config['status'][action]
+        result = control_gpio(gpio_pin)
+        if action == 'open':
+            status = 'UNLOCKED'
+        elif action == 'open':
+            status = 'LOCKED'
+    return status
+
 @app.route("/<path:url_path>")
 def any_path(url_path):
     log.info('path %s', url_path)
     d = url_mapping.get(url_path)
     if d:
+        if d.get('status'):
+            log.info('status is present %r', d.get('status'))
+            return trigger_emulation(d)
         gpio_pin = d['gpio']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
         return control_gpio(gpio_pin)
     else:
