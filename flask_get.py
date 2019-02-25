@@ -97,7 +97,7 @@ def any_path(url_path):
         abort(404)
 
 
-def main(argv=None):
+if __name__ == "__main__":
     if argv is None:
         argv = sys.argv
 
@@ -132,7 +132,3 @@ def main(argv=None):
             del(config['config'][key])
     log.info('Serving on http://%s:%d', settings['host'], settings['port'])
     app.run(**settings)
-
-
-if __name__ == "__main__":
-    sys.exit(main())
