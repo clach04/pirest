@@ -118,6 +118,7 @@ if __name__ == "__main__":
         'debug': False,
         'port': 8080,
         'host': '127.0.0.1',
+        #'ssl_context': 'adhoc'
         #'ssl_context': (cert_path, key_path)
     }
     default_config.update(config['config'])
@@ -128,5 +129,11 @@ if __name__ == "__main__":
     for key in list(settings.keys()):
         if key.startswith('#'):
             del(config['config'][key])
-    log.info('Serving on http://%s:%d', settings['host'], settings['port'])
+    protocol = 'http'
+    if settings.get('ssl_context'):
+        protocol = 'https'
+        ssl_context = settings['ssl_context']
+        if ssl_context != 'adhoc':
+            settings['ssl_context'] = (ssl_context[0], ssl_context[1])
+    log.info('Serving on %s://%s:%d', protocol, settings['host'], settings['port'])
     app.run(**settings)

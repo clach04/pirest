@@ -28,6 +28,41 @@ Then open a browser to http://localhost:8080/led_17 or issue:
 
 NOTE `http://localhost:8080/led_17` will work but `http://localhost:8080/led_17/` will *not*.
 
+## https / TLS / SSL support
+
+NOTE this requires pyopenssl which is not installed via the requirements above.
+
+Either install via `pip` or package manager for system, e.g.:
+
+    sudo apt-get install python-openssl
+    sudo apt-get install python3-openssl
+
+or
+
+    pip install pyopenssl
+
+Edit json config file and add to the `config` section to add a Flask run setting for `ssl_context`.
+Add either `adhoc` for quick and dirty testing or add certificate and key file names.
+
+E.g. Uncomment one of the ssl_context entries:
+
+    ....
+    "config": {
+        "debug": true,
+        "host": "0.0.0.0",
+        "port": 8080,
+        "#ssl_context": "adhoc",
+        "#ssl_context": ["cert.pem", "key.pem"],
+    },
+    ....
+
+Example #2 requires files to exist in current directory, generated via something like:
+
+    openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+
+Which will generate a certificate valid for 1 year.
+
+
 ## pirest service
 
 Systemd service (e.g. for Raspbian).
@@ -59,4 +94,5 @@ Useage
 The sample config file has an entry for a garage that works with https://github.com/mwarning/trigger
 and also https://github.com/openlab-aux/sphincter-remote/releases/tag/0.1.2
 
-NOTE at this time, this is experimental as the token is **ignored** and https is not implemented.
+NOTE at this time, this is considered experimental as the token is **ignored**.
+

@@ -2,7 +2,9 @@
     "config": {
         "#debug": true,
         "#host": "0.0.0.0",
-        "#port": 8080
+        "#port": 8080,
+        "#ssl_context": "adhoc",
+        "#ssl_context": ["cert.pem", "key.pem"]
     },
 
     "urls": {
