@@ -83,8 +83,11 @@ Useage
     sudo systemctl stop pirest.service
     sudo systemctl start pirest.service
     sudo systemctl restart pirest.service
-    sudo systemctl status pirest.service
-    sudo systemctl status pirest.service -n 100
+    sudo systemctl status pirest.service  # status and recent logs
+    sudo systemctl status pirest.service -n 100  # show last 100 log entries
+    journalctl  -u pirest.service  # show all logs
+
+    sudo systemctl status pirest_https.service -n 100
 
 
     systemctl list-unit-files --state=enabled | grep pirest
