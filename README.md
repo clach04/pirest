@@ -4,6 +4,7 @@ Yet another Raspberry Pi GPIO REST (like) interface.
 
 Consider these alternatives!:
 
+   * for usage with https://github.com/mwarning/trigger, see https://github.com/clach04/shell_locked
    * WebIOPi / Cayenne http://webiopi.trouch.com/
    * https://github.com/ThisIsQasim/WebGPIO
    * https://github.com/projectweekend/Pi-GPIO-Server
