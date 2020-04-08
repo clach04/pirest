@@ -29,6 +29,14 @@ Then open a browser to http://localhost:8080/led_17 or issue:
 
 NOTE `http://localhost:8080/led_17` will work but `http://localhost:8080/led_17/` will *not*.
 
+## Sentry support
+
+Optional:
+
+    pip3 install --upgrade 'sentry-sdk[flask]==0.13.0'
+
+
+
 ## https / TLS / SSL support
 
 NOTE this requires pyopenssl which is not installed via the requirements above.
@@ -92,6 +100,12 @@ Useage
 
 
     systemctl list-unit-files --state=enabled | grep pirest
+
+NOTE if changing service files, e.g. adding `Environment`, restart config (not just specific service):
+
+    sudo systemctl daemon-reload
+    sudo systemctl restart pirest.service
+
 
 ## Trigger Android app
 

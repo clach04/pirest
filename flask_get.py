@@ -19,6 +19,23 @@ from gpiozero import LED
 
 from flask import Flask, abort, request
 
+try:
+    if os.environ.get('SENTRY_DSN') is None:
+        raise ImportError
+    import sentry_sdk
+    from sentry_sdk.integrations.flask import FlaskIntegration
+    # dsn param to sentry_sdk.init() can be ommited if SENTRY_DSN environment variable is set
+    def sentry_init():
+        log.error('clach04 entry')
+        sentry_sdk.init(
+            integrations=[FlaskIntegration()]
+        )
+        sentry_sdk.capture_message('Starting')
+except ImportError:
+    def sentry_init():
+        log.error('sentry_init() called without SENTRY_DSN or sentry_sdk')
+        pass
+
 
 version_tuple = (0, 0, 1)
 version = version_string = __version__ = '%d.%d.%d' % version_tuple
@@ -46,6 +63,10 @@ def after_request(response):
     return response
 """
 
+
+@app.route('/debug-sentry')
+def trigger_error():
+    division_by_zero = 1 / 0
 
 @app.route("/")
 def hello():
@@ -135,5 +156,6 @@ if __name__ == "__main__":
         ssl_context = settings['ssl_context']
         if ssl_context != 'adhoc':
             settings['ssl_context'] = (ssl_context[0], ssl_context[1])
+    sentry_init()
     log.info('Serving on %s://%s:%d', protocol, settings['host'], settings['port'])
     app.run(**settings)
