@@ -87,7 +87,7 @@ Install
     sudo chmod 644 /etc/systemd/system/pirest.service
     sudo systemctl enable pirest.service
 
-Useage
+Usage
 
     sudo systemctl stop pirest.service
     sudo systemctl start pirest.service
