@@ -7,31 +7,34 @@
         "#ssl_context": ["cert.pem", "key.pem"]
     },
 
+    "mqtt": {
+        "mqtt_broker": "localhost",
+        "mqtt_port": 1883
+    },
+
     "urls": {
         "led_17": {
             "#comment1": "/led_17/ will fail, but /led_17 will work for URL",
-            "#comment2": "NOTE momentary ON, for hard coded (0.5) number of seconds",
-            "gpio": 27
+            "mqtt": {"topic": "led_17", "message": "toggle"}
         },
 
         "something/led_27": {
             "#comment1": "/something/led_27/ will fail, but /something/led_27 will work for URL",
-            "#comment2": "NOTE momentary ON, for hard coded (0.5) number of seconds",
-            "gpio": 17
+            "mqtt": {"topic": "something/led_27", "message": "flash"}
         },
 
         "tv_remote/on": {
-            "gpio": 17
+            "mqtt": {"topic": "tv_remote/on", "message": "on"}
         },
 
         "tv_remote/off": {
-            "gpio": 27
+            "mqtt": {"topic": "tv_remote/off", "message": "off"}
         },
 
         "garage": {
             "status": {
-                "close": 17,
-                "open": 27
+                "close": {"topic": "garage", "message": "close"},
+                "open": {"topic": "garage", "message": "open"}
             },
             "#comment_url": "curl http://localhost:8080/garage",
             "#comment_1": "allow control from https://github.com/mwarning/trigger"

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# https://www.raspberrypi.org/documentation/usage/gpio/python/README.md
 
 import datetime
 import json
@@ -8,14 +7,7 @@ import os
 import sys
 from time import sleep
 
-is_win = (sys.platform == 'win32')
-
-if is_win:
-    # hack for bug https://github.com/RPi-Distro/python-gpiozero/issues/600
-    os.environ['GPIOZERO_PIN_FACTORY'] = os.environ.get('GPIOZERO_PIN_FACTORY', 'mock')
-    # Alternatively SET GPIOZERO_PIN_FACTORY=mock
-
-from gpiozero import LED
+import paho.mqtt.client as paho
 
 from flask import Flask, abort, request
 
@@ -72,17 +64,10 @@ def trigger_error():
 def hello():
     return 'nello'
 
-def control_gpio(gpio_pin):
-    # assumes OUT
-    # assumes momentary toggle to (hard coded) high/on - hard coded time
-    # assumes returns current timestamp
-    relay_time = 0.5   # 0.5 seconds
-    log.debug('about to momentary toggle gpio/BCM %d', gpio_pin)
-    led = LED(gpio_pin)
-
-    led.on()  # FIXME use blink() with n=1
-    sleep(relay_time)
-    led.off()
+def mqtt_send(mqtt_payload):
+    (res, mid) =  mqttc.publish(mqtt_payload.get('topic'), mqtt_payload.get('message'))
+    # TODO process/return res, mid - check for MQTT_ERR_SUCCESS
+    log.info('res, mid %r / %r', res, mid)
 
     now = datetime.datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")
@@ -96,8 +81,8 @@ def trigger_emulation(config):
         return 'LOCKED'
     else:
         # open or close
-        gpio_pin = config['status'][action]
-        result = control_gpio(gpio_pin)
+        mqtt_payload = config['status'][action]
+        result = mqtt_send(mqtt_payload)
         if action == 'open':
             status = 'UNLOCKED'
         elif action == 'open':
@@ -111,8 +96,8 @@ def any_path(url_path):
     if d:
         if d.get('status'):
             return trigger_emulation(d)
-        gpio_pin = d['gpio']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
-        return control_gpio(gpio_pin)
+        mqtt_payload = d['mqtt']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
+        return mqtt_send(mqtt_payload)
     else:
         abort(404)
 
@@ -144,6 +129,9 @@ if __name__ == "__main__":
     }
     default_config.update(config['config'])
     config['config'] = default_config
+    config['mqtt'] = config.get('mqtt', {})
+    config['mqtt']['mqtt_broker'] = config['mqtt'].get('mqtt_broker', 'localhost')
+    config['mqtt']['mqtt_port'] = config['mqtt'].get('mqtt_port', 1883)
 
     settings = config['config']
     # dumb "comment" support, remove any keys that start with a "#"
@@ -156,6 +144,12 @@ if __name__ == "__main__":
         ssl_context = settings['ssl_context']
         if ssl_context != 'adhoc':
             settings['ssl_context'] = (ssl_context[0], ssl_context[1])
+
     sentry_init()
+
+    print(json.dumps(config, indent=4))
+    mqttc = paho.Client()  # TODO pass in clientid
+    mqttc.connect(config['mqtt']['mqtt_broker'], config['mqtt']['mqtt_port'])
+
     log.info('Serving on %s://%s:%d', protocol, settings['host'], settings['port'])
     app.run(**settings)

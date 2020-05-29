@@ -1,16 +1,19 @@
 # Pi REST - pirest
 
-Yet another Raspberry Pi GPIO REST (like) interface.
+Yet another Raspberry Pi -GPIO- MQTT REST (like) interface.
+
+Quick and dirty HTTP/HTTPS to MQTT
 
 Consider these alternatives!:
 
-   * for usage with https://github.com/mwarning/trigger, see https://github.com/clach04/shell_locked
-   * WebIOPi / Cayenne http://webiopi.trouch.com/
-   * https://github.com/ThisIsQasim/WebGPIO
-   * https://github.com/projectweekend/Pi-GPIO-Server
+   * https://github.com/subzerobo/http-mqtt-bridge.
+   * https://github.com/energieip/swh200-rest2mqtt-go
+   * https://github.com/petkov/http_to_mqtt
+   * https://github.com/JOxBERGER/REST-2-Mqtt
+   * https://github.com/krambox/rest2mqtt
 
 Right now this responds to GETs, so not exactly RESTful.
-A GET will result in a (GPIO) side effect!
+A GET will result in a (MQQT) publish side effect!
 
 ## Getting Started
 
