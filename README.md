@@ -4,6 +4,12 @@ Yet another Raspberry Pi -GPIO- MQTT REST (like) interface.
 
 Quick and dirty HTTP/HTTPS to MQTT
 
+Take a look at:
+
+  * https://github.com/clach04/mqtt-launcher
+  * https://github.com/flyte/pi-mqtt-gpio/
+     * https://github.com/flyte/pi-mqtt-gpio/issues/38
+
 Consider these alternatives!:
 
    * https://github.com/subzerobo/http-mqtt-bridge.
