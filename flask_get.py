@@ -147,7 +147,6 @@ if __name__ == "__main__":
 
     sentry_init()
 
-    print(json.dumps(config, indent=4))
     mqttc = paho.Client()  # TODO pass in clientid
     mqttc.connect(config['mqtt']['mqtt_broker'], config['mqtt']['mqtt_port'])
 
