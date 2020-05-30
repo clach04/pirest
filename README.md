@@ -15,6 +15,7 @@ Consider these alternatives!:
    * https://github.com/subzerobo/http-mqtt-bridge.
    * https://github.com/energieip/swh200-rest2mqtt-go
    * https://github.com/petkov/http_to_mqtt
+      * https://www.home-assistant.io/blog/2017/03/28/http-to-mqtt-bridge/
    * https://github.com/JOxBERGER/REST-2-Mqtt
    * https://github.com/krambox/rest2mqtt
 
@@ -22,6 +23,12 @@ Right now this responds to GETs, so not exactly RESTful.
 A GET will result in a (MQQT) publish side effect!
 
 ## Getting Started
+
+NOTE needs a working MQTT broker, mosquitto is a good basic one to try:
+
+    sudo apt update
+    sudo apt install -y mosquitto mosquitto-clients
+    sudo systemctl enable mosquitto.service
 
 If installing/working with a source checkout issue:
 
