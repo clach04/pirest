@@ -8,6 +8,7 @@ import sys
 from time import sleep
 
 import paho.mqtt.client as paho
+import paho.mqtt.publish as publish
 
 from flask import Flask, abort, request
 
@@ -65,9 +66,8 @@ def hello():
     return 'nello'
 
 def mqtt_send(mqtt_payload):
-    (res, mid) =  mqttc.publish(mqtt_payload.get('topic'), mqtt_payload.get('message'))
-    # TODO process/return res, mid - check for MQTT_ERR_SUCCESS
-    log.info('res, mid %r / %r', res, mid)
+    result =  publish.single(mqtt_payload.get('topic'), mqtt_payload.get('message'), hostname=config['mqtt']['mqtt_broker'], port=config['mqtt']['mqtt_port'])
+    log.info('result %r', result)  # returns None on success, on failure exception
 
     now = datetime.datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")
@@ -146,9 +146,6 @@ if __name__ == "__main__":
             settings['ssl_context'] = (ssl_context[0], ssl_context[1])
 
     sentry_init()
-
-    mqttc = paho.Client()  # TODO pass in clientid
-    mqttc.connect(config['mqtt']['mqtt_broker'], config['mqtt']['mqtt_port'])
 
     log.info('Serving on %s://%s:%d', protocol, settings['host'], settings['port'])
     app.run(**settings)
