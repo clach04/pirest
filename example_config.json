@@ -36,7 +36,9 @@
                 "close": {"topic": "garage", "message": "close"},
                 "open": {"topic": "garage", "message": "open"}
             },
-            "#comment_url": "curl http://localhost:8080/garage",
+            "#comment_url1": "curl http://localhost:8080/garage?action=open",
+            "#comment_url2": "curl http://localhost:8080/garage?action=close",
+            "#comment_url2": "curl http://localhost:8080/garage?action=status",
             "#comment_1": "allow control from https://github.com/mwarning/trigger"
         }
     }
