@@ -100,7 +100,7 @@ def trigger_emulation(config):
         result = control_gpio(gpio_pin)
         if action == 'open':
             status = 'UNLOCKED'
-        elif action == 'open':
+        elif action != 'open':
             status = 'LOCKED'
     return status
 
