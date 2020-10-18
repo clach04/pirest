@@ -85,7 +85,7 @@ def trigger_emulation(config):
         result = mqtt_send(mqtt_payload)
         if action == 'open':
             status = 'UNLOCKED'
-        elif action == 'open':
+        elif action != 'open':
             status = 'LOCKED'
     return status
 
