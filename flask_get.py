@@ -73,10 +73,26 @@ def mqtt_send(mqtt_payload):
     return now.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def trigger_emulation(config):
-    status = 'LOCKED'  # may not be a good default status
+def trigger_emulation(config, auth=None):
+    # Handle URLs from:
+    #   * https://github.com/openlab-aux/sphincter-remote/blob/master/app/src/main/java/com/michiwend/sphincterremote/SphincterRequestHandler.java
+    #   * https://github.com/mwarning/trigger
+    # Viz. variables/parmeters `action` and `token`
+    auth = auth or {}
+    print(auth)
+    status = 'UNKNOWN'  # If sphincter does not see LOCKED/UNLOCKED, status is unknown and "Lock door" and "Unlock door" buttons are inactive
     action = request.args.get('action')
     log.info('GET action %r', action)
+    token = request.args.get('token')
+    log.info('GET token %r', token)
+    if auth:
+        # Auth is all or nothing, different ACL for different resources not implemented (sphincter client app only supports one server, unlike Trigger)
+        if token not in auth:
+            log.error('auth failure for token %r, action %r, resource %r', token, action, config)  # TODO config is not the easiest to map to source
+            return status  # maybe raise 401, 403, etc.?
+        else:
+            log.info('Using token for %r', auth.get(token))
+
     if action in ('state', 'status'):
         return 'LOCKED'
     else:
@@ -92,10 +108,30 @@ def trigger_emulation(config):
 @app.route("/<path:url_path>")
 def any_path(url_path):
     log.info('path %s', url_path)
+    # TODO Basic/HexDigest-Auth
     d = url_mapping.get(url_path)
     if d:
         if d.get('status'):
-            return trigger_emulation(d)
+            return trigger_emulation(d, config.get('auth'))
+
+        auth = config.get('auth', {})
+        if auth:
+            token = request.headers.get('Authorization')
+            log.info('GET token %r', token)
+            # Parse Home Assistant style Authorization Bearer tokens https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token
+            if token:
+                # Dumb "parser"
+                token_split = token.split()
+                if len(token_split) == 2:
+                    if token_split[0].lower() == 'bearer':
+                        token = token_split[1]
+
+
+            # Auth is all or nothing, different ACL for different resources not implemented (sphincter client app only supports one server, unlike Trigger)
+            if token not in auth:
+                log.error('auth failure for token %r, URL  %r', token, url_path)
+                abort(401)
+            log.info('Using token for %r', auth.get(token))
         mqtt_payload = d['mqtt']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
         return mqtt_send(mqtt_payload)
     else:
