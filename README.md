@@ -115,3 +115,23 @@ and also https://github.com/openlab-aux/sphincter-remote/releases/tag/0.1.2
 
 This includes support for sphincter/sphincterd token support (NOTE for all URLs, not per resource).
 
+## Security token support
+
+There is support for two auth types depending on the URL form used:
+
+  * URL Get Parameter  - as used by https://github.com/openlab-aux/sphincter-remote `token` parameters. See `example_config.json` for an example. Remove the auth entries to disable auth.
+  * Authorization Header as used by Home Assistant style Authorization Bearer tokens https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token
+
+
+
+    curl 'http://localhost:8080/garage?action=open&token=test_token'
+    curl 'http://localhost:8080/garage?action=open&token=ABCDEFGH'
+
+    curl -X GET \
+      http://localhost:8080/led_17 \
+      -H 'Authorization: Bearer test_token'
+
+    curl -X GET \
+      http://localhost:8080/led_17 \
+      -H 'Authorization: Bearer ABCDEFGH'
+

@@ -124,11 +124,29 @@ def trigger_emulation(config, auth=None):
 def any_path(url_path):
     log.info('path %s', url_path)
     # TODO Basic/HexDigest-Auth
-    # TODO Home Assistant style Authorization Bearer tokens https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token
     d = url_mapping.get(url_path)
     if d:
         if d.get('status'):
             return trigger_emulation(d, config.get('auth'))
+
+        auth = config.get('auth', {})
+        if auth:
+            token = request.headers.get('Authorization')
+            log.info('GET token %r', token)
+            # Parse Home Assistant style Authorization Bearer tokens https://developers.home-assistant.io/docs/auth_api/#long-lived-access-token
+            if token:
+                # Dumb "parser"
+                token_split = token.split()
+                if len(token_split) == 2:
+                    if token_split[0].lower() == 'bearer':
+                        token = token_split[1]
+
+
+            # Auth is all or nothing, different ACL for different resources not implemented (sphincter client app only supports one server, unlike Trigger)
+            if token not in auth:
+                log.error('auth failure for token %r, URL  %r', token, url_path)
+                abort(401)
+            log.info('Using token for %r', auth.get(token))
         gpio_pin = d['gpio']  # TODO handle bad config? What if this key is missing? Config validator would avoid this
         return control_gpio(gpio_pin)
     else:
