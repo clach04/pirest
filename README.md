@@ -21,6 +21,7 @@ If installing/working with a source checkout issue:
 Run:
 
     cp example_config.json config.json
+    # REMOVE "auth" section from config.json (or retain and then pass in token)
     python flask_get.py
 
 Then open a browser to http://localhost:8080/led_17 or issue:
@@ -112,5 +113,5 @@ NOTE if changing service files, e.g. adding `Environment`, restart config (not j
 The sample config file has an entry for a garage that works with https://github.com/mwarning/trigger
 and also https://github.com/openlab-aux/sphincter-remote/releases/tag/0.1.2
 
-NOTE at this time, this is considered experimental as the token is **ignored**.
+This includes support for sphincter/sphincterd token support (NOTE for all URLs, not per resource).
 

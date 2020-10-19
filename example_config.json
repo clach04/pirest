@@ -1,4 +1,8 @@
 {
+    "auth": {
+        "test_token": "Demo token name/description"
+    },
+
     "config": {
         "#debug": true,
         "#host": "0.0.0.0",
