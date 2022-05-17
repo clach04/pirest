@@ -2,6 +2,11 @@
 
 Yet another Raspberry Pi GPIO REST (like) interface.
 
+Right now this responds to GETs, so not exactly RESTful.
+A GET will result in a (GPIO) side effect!
+
+For usage with https://github.com/mwarning/trigger (and also https://github.com/openlab-aux/sphincter-remote)
+
 Consider these alternatives!:
 
    * for usage with https://github.com/mwarning/trigger, see https://github.com/clach04/shell_locked
@@ -9,8 +14,6 @@ Consider these alternatives!:
    * https://github.com/ThisIsQasim/WebGPIO
    * https://github.com/projectweekend/Pi-GPIO-Server
 
-Right now this responds to GETs, so not exactly RESTful.
-A GET will result in a (GPIO) side effect!
 
 ## Getting Started
 
